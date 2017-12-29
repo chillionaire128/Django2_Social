@@ -4,14 +4,11 @@
   <head>
     <meta charset="utf-8">
     <title>Social Clone</title>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="{% static 'simplesocial/css/master.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/master.css' %}">
   </head>
   <body>
     <nav class='navbar mynav' role='navigation' id='navbar'>
@@ -19,14 +16,14 @@
         <a class="navbar-brand mynav" href="{% url 'home' %}">Simple Social</a>
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
-            <li><a href="#">Post</a></li>
-            <li><a href="#">Groups</a></li>
-            <li><a href="#">Create Group</a></li>
-            <li><a href="{% url 'accounts:logout' %}"></a></li>
+            <li class='nav-item'><a href="#">Post</a></li>
+            <li class='nav-item'><a href="#">Groups</a></li>
+            <li class='nav-item'><a href="#">Create Group</a></li>
+            <li class='nav-item'><a href="{% url 'accounts:logout' %}">Log out</a></li>
           {% else %}
-            <li><a href="#">Groups</a></li>
-            <li><a href="{% url 'accounts:login' %}">Log In</a></li>
-            <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
+            <li class='nav-item'><a href="#">Groups</a></li>
+            <li class='nav-item'><a href="{% url 'accounts:login' %}">Log In</a></li>
+            <li class='nav-item'><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
           {% endif %}
         </ul>
       </div>
