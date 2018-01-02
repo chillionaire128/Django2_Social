@@ -1,3 +1,20 @@
 from django.shortcuts import render
+from django.urls import reverse
 
-# Create your views here.
+from django.views import generic
+
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+
+from groups.models import Group, GroupMember
+
+
+class CreateGroup(LoginRequiredMixin, generic.CreateView):
+    fields = ('name', 'description')
+    model = Group
+
+class SingleGroup(generic.DetailView):
+    model = Group
+
+class ListGroup(generic.ListView):
+    model = Group
