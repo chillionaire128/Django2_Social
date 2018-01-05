@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 from django.http import Http404
 from django.views import generic
+from django.contrib import messages
 
-from braces.views import SelectRelatedMixin
+from braces.views import SelectRelatedMixin, LoginRequiredMixin
 from . import models
 from . import forms
 
@@ -13,7 +14,7 @@ User = get_user_model()
 
 class PostList(SelectRelatedMixin, generic.ListView):
     model = models.Post
-    select_related('user', 'group')
+    select_related = ['user', 'group']
 
 class UserPosts(generic.ListView):
     model = models.Post
@@ -33,18 +34,19 @@ class UserPosts(generic.ListView):
         context['post_user'] = self.post_user
         return context
 
-class PostDetail(SelectRelatedMixin,generic.DetailView):
-    models = models.Post
-    select_related = ('user', 'group')
+class PostDetail(SelectRelatedMixin, generic.DetailView):
+    model = models.Post
+    select_related = ("user", "group")
 
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.filter(
-            user__username__iexact=self.kwargs.get('username'))
+            user__username__iexact=self.kwargs.get("username")
+        )
 
 class CreatePost(LoginRequiredMixin, SelectRelatedMixin, generic.CreateView):
     fields = ('message', 'group')
-    model = models.post
+    model = models.Post
 
     def form_valid(self,form):
         self.object = form.save(commit=False)
@@ -59,7 +61,7 @@ class DeletePost(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.filer(user_id = self.request.user.id)
+        return queryset.filter(user_id = self.request.user.id)
 
     def delete(self,*args,**kwargs):
         messages.success(self.request, 'Post Deleted')

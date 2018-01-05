@@ -9,6 +9,8 @@ from django.contrib import messages
 
 from groups.models import Group, GroupMember
 
+from django.db import IntegrityError
+
 
 class CreateGroup(LoginRequiredMixin, generic.CreateView):
     fields = ('name', 'description')
@@ -29,7 +31,7 @@ class JoinGroup(LoginRequiredMixin, generic.RedirectView):
         group = get_object_or_404(Group,slug=self.kwargs.get('slug'))
 
         try:
-            GroupMember.object.create(user=self.request.user, group=group)
+            GroupMember.objects.create(user=self.request.user, group=group)
         except IntegrityError:
             messages.warning(self.request, 'Warning already a member!')
         else:
@@ -46,13 +48,13 @@ class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
     def get(self, request, *args, **kwargs):
 
         try:
-            membership = models.GroupMembr.objects.filter(
+            membership = GroupMember.objects.filter(
                 user=self.request.user,
                 group__slug=self.kwargs.get('slug')
             ).get()
-        except models.GroupMember.DoesNotExist:
+        except GroupMember.DoesNotExist:
             messages.warning(self.request, 'Sorry you are not a member')
         else:
             membership.delete()
-            messages.sucsess(self.request, 'You have left the group')
+            messages.success(self.request, 'You have left the group')
         return super().get(request, *args, **kwargs)
